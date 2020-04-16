@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Test_Task_Mapper\Test_Task_Mapper.csproj" />
+    <ProjectReference Include="..\Test_Task_Mapper\CustomMapper.csproj" />
   </ItemGroup>
 
 </Project>

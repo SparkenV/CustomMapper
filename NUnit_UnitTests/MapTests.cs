@@ -1,9 +1,9 @@
-﻿namespace NUnit_UnitTests
+﻿namespace UnitTests
 {
     using System;
     using System.Collections.Generic;
     using NUnit.Framework;
-    using Test_Task_Mapper;
+    using CustomMapper;
 
     /// <summary>
     /// Unit tests of class Map
@@ -38,20 +38,20 @@
         public void SetMappingAction_SetCustomMappingAction_ActionReturnCorrectObject(int value)
         {
             // Arrange
-            var map_source_int = new Map(typeof(Source), typeof(int));
+            var mapFromSourceToInt = new Map(typeof(Source), typeof(int));
 
             var sourceObject = new Source()
             {
                 IntToFloatProperty = value
             };
 
-            map_source_int.SetMappingAction((obj) =>
+            mapFromSourceToInt.SetMappingAction((obj) =>
             {
                 return ((Source)obj).IntToFloatProperty;
             });
 
             // Act
-            var result = map_source_int.MappingAction(sourceObject);
+            var result = mapFromSourceToInt.MappingAction(sourceObject);
 
             // Assert
             Assert.AreEqual(value, result);
@@ -69,7 +69,7 @@
         public void SetMappingAction_CustomTypeToInternalType_ReturnDefaultValueOfInternalType(int value)
         {
             // Arrange
-            var map_source_int = new Map(typeof(Source), typeof(int));
+            var mapFromSourceToInt = new Map(typeof(Source), typeof(int));
 
             var sourceObject = new Source()
             {
@@ -77,7 +77,7 @@
             };
 
             // Act
-            var result = map_source_int.MappingAction(sourceObject);
+            var result = mapFromSourceToInt.MappingAction(sourceObject);
 
             // Assert
             Assert.AreEqual(default(int), result);
@@ -123,7 +123,7 @@
         public void DefaultMappingAction_CustomTypeToInternalType_ReturnDefaultInternalValues()
         {
             // Arrange
-            var map_Source_to_int = new Map(typeof(Source), typeof(int));
+            var mapFromSourceToInt = new Map(typeof(Source), typeof(int));
 
             var sourceObject = new Source()
             {
@@ -137,7 +137,7 @@
             };
 
             // Act
-            var result = map_Source_to_int.DefaultMappingAction(sourceObject);
+            var result = mapFromSourceToInt.DefaultMappingAction(sourceObject);
 
             // Assert
             Assert.IsInstanceOf(typeof(int), result);
@@ -173,9 +173,9 @@
                 typeof(InvalidCastException), 
                 new TestDelegate(() => 
                 {
-                    var map_dynamic_to_destination = new Map(typeof(TestSource), typeof(Destination));
+                    var mapFromTestSourceToDestination = new Map(typeof(TestSource), typeof(Destination));
                     var sourceObject = new TestSource();
-                    map_dynamic_to_destination.DefaultMappingAction(sourceObject);
+                    mapFromTestSourceToDestination.DefaultMappingAction(sourceObject);
                 }));
         }
 
@@ -186,26 +186,26 @@
         public void GetHashCode_CompareMaps_MapsAreEqual()
         {
             // Arrange
-            var map_int_to_float = new Map(typeof(int), typeof(float));
-            var map_string_to_Source = new Map(typeof(string), typeof(Source));
+            var mapFromIntToFloat = new Map(typeof(int), typeof(float));
+            var mapStringToSource = new Map(typeof(string), typeof(Source));
 
-            var int_to_float_pair = new KeyValuePair<Type, Type>(typeof(int), typeof(float));
-            var string_to_Source_pair = new KeyValuePair<Type, Type>(typeof(string), typeof(Source));
-            var source_to_destination_pair = new KeyValuePair<Type, Type>(typeof(Source), typeof(Destination));
+            var intToFloatPair = new KeyValuePair<Type, Type>(typeof(int), typeof(float));
+            var stringToSourcePair = new KeyValuePair<Type, Type>(typeof(string), typeof(Source));
+            var sourceToDestinationPair = new KeyValuePair<Type, Type>(typeof(Source), typeof(Destination));
 
             // Act
-            var int_to_float_hash_code = int_to_float_pair.GetHashCode();
-            var string_to_Source_hash_code = string_to_Source_pair.GetHashCode();
-            var source_to_destination_hash_code = source_to_destination_pair.GetHashCode();
+            var intToFloatHashCode = intToFloatPair.GetHashCode();
+            var stringToSourceHashCode = stringToSourcePair.GetHashCode();
+            var sourceToDestinationHashCode = sourceToDestinationPair.GetHashCode();
 
-            var map_int_to_float_hash_code = map_int_to_float.GetHashCode();
-            var map_string_to_Source_hash_code = map_string_to_Source.GetHashCode();
-            var map_source_to_destination_hash_code = this.map.GetHashCode();
+            var mapIntToFloatHashCode = mapFromIntToFloat.GetHashCode();
+            var mapStringToSourceHashCode = mapStringToSource.GetHashCode();
+            var mapSourceToDestinationHashCode = this.map.GetHashCode();
 
             // Assert
-            Assert.AreEqual(int_to_float_hash_code, map_int_to_float_hash_code);
-            Assert.AreEqual(string_to_Source_hash_code, map_string_to_Source_hash_code);
-            Assert.AreEqual(source_to_destination_hash_code, map_source_to_destination_hash_code);
+            Assert.AreEqual(intToFloatHashCode, mapIntToFloatHashCode);
+            Assert.AreEqual(stringToSourceHashCode, mapStringToSourceHashCode);
+            Assert.AreEqual(sourceToDestinationHashCode, mapSourceToDestinationHashCode);
         }
 
         /// <summary>
@@ -215,19 +215,19 @@
         public void Equals_CompareMapsByMappingTypes_MapsAreEqualWhenMappingTypesAreSame()
         {
             // Arrange
-            var map_int_to_float = new Map(typeof(int), typeof(float));
-            var map_Source_to_Destination = new Map(typeof(Source), typeof(Destination));
-            var map_string_to_Source = new Map(typeof(string), typeof(Source));
+            var mapFromIntToFloat = new Map(typeof(int), typeof(float));
+            var mapFromSourceToDestination = new Map(typeof(Source), typeof(Destination));
+            var mapFromStringToSource = new Map(typeof(string), typeof(Source));
 
             // Act
-            bool same_types = this.map.Equals(map_Source_to_Destination);
-            bool int_to_float_equals_Source_to_Destination = map_int_to_float.Equals(this.map);
-            bool int_to_float_equals_string_to_Source = map_int_to_float.Equals(map_string_to_Source);
+            bool isSameTypesEqual = this.map.Equals(mapFromSourceToDestination);
+            bool isIntToFloatEqualsSourceToDestination = mapFromIntToFloat.Equals(this.map);
+            bool isIntToFloatEqualsStringToSource = mapFromIntToFloat.Equals(mapFromStringToSource);
 
             // Assert
-            Assert.IsTrue(same_types);
-            Assert.IsFalse(int_to_float_equals_Source_to_Destination);
-            Assert.IsFalse(int_to_float_equals_string_to_Source);
+            Assert.IsTrue(isSameTypesEqual);
+            Assert.IsFalse(isIntToFloatEqualsSourceToDestination);
+            Assert.IsFalse(isIntToFloatEqualsStringToSource);
         }
 
         /// <summary>

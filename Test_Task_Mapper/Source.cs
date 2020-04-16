@@ -1,4 +1,4 @@
-﻿namespace Test_Task_Mapper
+﻿namespace CustomMapper
 {
     using System.Collections.Generic;
 

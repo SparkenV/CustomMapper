@@ -1,7 +1,7 @@
-﻿namespace NUnit_UnitTests
+﻿namespace UnitTests
 {
     using NUnit.Framework;
-    using Test_Task_Mapper;
+    using CustomMapper;
 
     /// <summary>
     /// Unit tests of class Mapper

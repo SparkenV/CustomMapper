@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Test_Task_Mapper
+namespace CustomMapper
 {
     class Program
     {
